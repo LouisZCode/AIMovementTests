@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c5wtn73wsaolx"
-path="res://.godot/imported/07_Farmer_Walking_256x256.png-0acaaa6caf844f38d7ace46aed2e365a.ctex"
+uid="uid://bctnmiuar1rqu"
+path="res://.godot/imported/farmer_idle.png-a86004f587d330357c78eb02b28053cd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/07_Farmer_Walking_256x256.png"
-dest_files=["res://.godot/imported/07_Farmer_Walking_256x256.png-0acaaa6caf844f38d7ace46aed2e365a.ctex"]
+source_file="res://assets/farmer_idle.png"
+dest_files=["res://.godot/imported/farmer_idle.png-a86004f587d330357c78eb02b28053cd.ctex"]
 
 [params]
 

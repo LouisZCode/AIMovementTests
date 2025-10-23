@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://byuw15w5rg3b5"
-path="res://.godot/imported/farmer_running_spritesheet.png-07a72d51703a717acfc5b7d51098a72a.ctex"
+uid="uid://c5wtn73wsaolx"
+path="res://.godot/imported/farmer_walking.png-adad4e91c92571cb9ff0fcf13e87c8d6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/farmer_running_spritesheet.png"
-dest_files=["res://.godot/imported/farmer_running_spritesheet.png-07a72d51703a717acfc5b7d51098a72a.ctex"]
+source_file="res://assets/farmer_walking.png"
+dest_files=["res://.godot/imported/farmer_walking.png-adad4e91c92571cb9ff0fcf13e87c8d6.ctex"]
 
 [params]
 
