@@ -208,15 +208,16 @@ animations = [{
 [node name="main" type="Node2D"]
 
 [node name="Background" type="Sprite2D" parent="."]
-position = Vector2(640, 401.5)
 scale = Vector2(1.1759259, 1.1069444)
 texture = ExtResource("1_0wfyh")
 
 [node name="player" type="CharacterBody2D" parent="."]
+position = Vector2(7, -4)
 script = ExtResource("2_sugp2")
 
 [node name="player_animation" type="AnimatedSprite2D" parent="player"]
-position = Vector2(645, 594)
+position = Vector2(-3, 188)
 sprite_frames = SubResource("SpriteFrames_muem4")
-animation = &"running"
-frame_progress = 0.65321535
+animation = &"idle"
+
+[node name="Camera2D" type="Camera2D" parent="player"]
