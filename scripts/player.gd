@@ -45,6 +45,12 @@ func _physics_process(_delta):
 	# Rotate arm to mouse
 	if is_aiming:
 		arm_pivot.look_at(mouse_pos)
+		# Flip arm vertically when facing left
+		if facing_right:
+			arm.scale.y = .25
+		else:
+			arm.scale.y = -.25
+			arm.position.x = -10
 	
 	# Get input (no movement while aiming)
 	var direction = 0
