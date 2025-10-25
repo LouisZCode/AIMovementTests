@@ -50,8 +50,12 @@ func _physics_process(_delta):
 	var direction = 0
 	if not is_aiming:
 		direction = Input.get_axis("ui_left", "ui_right")
-	
-	var is_running = Input.is_action_pressed("ui_shift")
+
+	# Check if moving backwards
+	var is_backwards = (direction < 0 and facing_right) or (direction > 0 and not facing_right)
+
+	# Only run when moving forward
+	var is_running = Input.is_action_pressed("ui_shift") and not is_backwards
 	var current_speed = speed * 2.5 if is_running else speed
 	
 	# Move
@@ -60,9 +64,16 @@ func _physics_process(_delta):
 	
 	# Animations
 	if direction != 0:
-		if is_running:
+		# Check if moving backwards (movement opposite to facing)		
+		if is_backwards:
+			anim.play("walking_backwards")
+		elif is_running:
 			anim.play("running")
 		else:
 			anim.play("walking")
 	else:
-		anim.play("idle")
+		# Idle - choose based on aiming state
+		if is_aiming:
+			anim.play("idle_noarms")
+		else:
+			anim.play("idle")
