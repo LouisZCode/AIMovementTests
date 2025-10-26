@@ -1,4 +1,4 @@
-[gd_scene load_steps=84 format=3 uid="uid://cooh0q3c4222m"]
+[gd_scene load_steps=87 format=3 uid="uid://cooh0q3c4222m"]
 
 [ext_resource type="Texture2D" uid="uid://y0cey1ol4ckh" path="res://environment/house_simpleBG.png" id="1_tipki"]
 [ext_resource type="Texture2D" uid="uid://c5wtn73wsaolx" path="res://assets/farmer_walking.png" id="2_0wfyh"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dbp4kkl04wvy7" path="res://assets/arm_sprite.png" id="5_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://daucnneyhynox" path="res://assets/farmer_head.png" id="6_tefeu"]
 [ext_resource type="Texture2D" uid="uid://ctw357ppww3st" path="res://assets/farmer_walking_backwards.png" id="6_tipki"]
+[ext_resource type="Shader" uid="uid://dtl6scjvkcfpb" path="res://shaders/main.gdshader" id="13_trceg"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yq6so"]
 atlas = ExtResource("3_tefeu")
@@ -527,6 +528,23 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_eb6dy"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(640, 200, 1)
+angular_velocity_min = 19.999983
+angular_velocity_max = 49.99998
+gravity = Vector3(0, -20, 0)
+scale_min = 0.5
+scale_max = 1.5
+color = Color(0.7529412, 1, 0.63529414, 1)
+turbulence_enabled = true
+turbulence_noise_strength = 0.1
+turbulence_noise_scale = 0.3
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eb6dy"]
+shader = ExtResource("13_trceg")
+
 [node name="main" type="Node2D"]
 
 [node name="Background" type="Sprite2D" parent="."]
@@ -576,6 +594,12 @@ frame_progress = 0.8783438
 
 [node name="Camera2D" type="Camera2D" parent="player"]
 
+[node name="Spores" type="GPUParticles2D" parent="player/Camera2D"]
+position = Vector2(-5, 219)
+amount = 1000
+lifetime = 4.859999999999999
+process_material = SubResource("ParticleProcessMaterial_eb6dy")
+
 [node name="ArmPivot" type="Node2D" parent="player"]
 position = Vector2(-7, 157)
 
@@ -594,3 +618,16 @@ position = Vector2(-10, 145)
 position = Vector2(0, 4)
 texture = ExtResource("6_tefeu")
 offset = Vector2(7, 39)
+
+[node name="ScreenFilter - Gray" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="ScreenFilter - Gray"]
+material = SubResource("ShaderMaterial_eb6dy")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0.14509805)
