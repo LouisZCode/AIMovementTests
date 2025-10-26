@@ -1,12 +1,15 @@
 extends CharacterBody2D
 
 @export var speed = 170.0
+@export var fade_distance = 500.0  # Distance to fade over
+@export var fade_start_offset = 500.0  # Offset from foreground left edge (negative = earlier, positive = later)
 
 @onready var anim = $player_animation
 @onready var arm_pivot = $ArmPivot
 @onready var arm = $ArmPivot/Arm
 @onready var head_pivot = $HeadPivot
 @onready var head = $HeadPivot/Head
+@onready var cave_foreground = get_node("../Cave_Foreground/Sprite2D")  # Reference the sprite child, not parent
 
 var is_aiming = false
 
@@ -83,3 +86,19 @@ func _physics_process(_delta):
 			anim.play("idle_noarms")
 		else:
 			anim.play("idle")
+	
+	# Fade foreground when approaching from the left
+	if cave_foreground:
+		# Distance FROM the sprite TO the player (positive when player is to the left)
+		var distance_from_sprite = cave_foreground.global_position.x - global_position.x
+
+		if distance_from_sprite >= fade_distance:
+			# Player is far to the left - fully visible
+			cave_foreground.modulate.a = 1.0
+		elif distance_from_sprite > 0:
+			# Player approaching from left - fade out proportionally
+			var alpha = distance_from_sprite / fade_distance
+			cave_foreground.modulate.a = alpha
+		else:
+			# Player at or past the sprite (to the right) - invisible
+			cave_foreground.modulate.a = 0.0
