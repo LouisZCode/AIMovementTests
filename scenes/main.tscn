@@ -1,4 +1,4 @@
-[gd_scene load_steps=87 format=3 uid="uid://cooh0q3c4222m"]
+[gd_scene load_steps=89 format=3 uid="uid://cooh0q3c4222m"]
 
 [ext_resource type="Texture2D" uid="uid://y0cey1ol4ckh" path="res://environment/house_simpleBG.png" id="1_tipki"]
 [ext_resource type="Texture2D" uid="uid://c5wtn73wsaolx" path="res://assets/farmer_walking.png" id="2_0wfyh"]
@@ -542,6 +542,14 @@ turbulence_enabled = true
 turbulence_noise_strength = 0.1
 turbulence_noise_scale = 0.3
 
+[sub_resource type="Gradient" id="Gradient_trceg"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_a8y0u"]
+gradient = SubResource("Gradient_trceg")
+width = 128
+fill_from = Vector2(0, 0.003968254)
+fill_to = Vector2(0.50396824, 0)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eb6dy"]
 shader = ExtResource("13_trceg")
 
@@ -619,6 +627,12 @@ position = Vector2(0, 4)
 texture = ExtResource("6_tefeu")
 offset = Vector2(7, 39)
 
+[node name="Flashlight" type="PointLight2D" parent="player/HeadPivot"]
+energy = 0.56
+texture = SubResource("GradientTexture2D_a8y0u")
+offset = Vector2(138, 0)
+texture_scale = 2.24
+
 [node name="ScreenFilter - Gray" type="CanvasLayer" parent="."]
 visible = false
 
@@ -631,3 +645,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 1, 1, 0.14509805)
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.51481307, 0.514813, 0.514813, 1)

@@ -19,7 +19,7 @@ func _physics_process(_delta):
 	var mouse_pos = get_global_mouse_position()
 	var facing_right = mouse_pos.x > global_position.x
 	anim.flip_h = not facing_right
-
+	
 	# Flip HeadPivot
 	if facing_right:
 		head_pivot.scale.x = 1
@@ -31,14 +31,14 @@ func _physics_process(_delta):
 		head.scale.y = -1
 		head_pivot.position.x = 5
 		head_pivot.position.y = 150
-
+	
 	# Point head at mouse (gives us target angle)
 	head_pivot.look_at(mouse_pos)
 	var target_angle = head_pivot.rotation
-
+	
 	# Clamp rotation limits (-90 to 90 degrees)
 	target_angle = clamp(target_angle, deg_to_rad(-90), deg_to_rad(90))
-
+	
 	# Apply clamped angle back to head_pivot (this makes it smooth)
 	head_pivot.rotation = lerp_angle(head_pivot.rotation, target_angle, 0.15)
 	
@@ -56,10 +56,10 @@ func _physics_process(_delta):
 	var direction = 0
 	if not is_aiming:
 		direction = Input.get_axis("ui_left", "ui_right")
-
+	
 	# Check if moving backwards
 	var is_backwards = (direction < 0 and facing_right) or (direction > 0 and not facing_right)
-
+	
 	# Only run when moving forward
 	var is_running = Input.is_action_pressed("ui_shift") and not is_backwards
 	var current_speed = speed * 2.5 if is_running else speed
