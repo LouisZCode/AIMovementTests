@@ -543,12 +543,18 @@ turbulence_noise_strength = 0.1
 turbulence_noise_scale = 0.3
 
 [sub_resource type="Gradient" id="Gradient_trceg"]
+offsets = PackedFloat32Array(0.27325583, 0.9476744)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_a8y0u"]
 gradient = SubResource("Gradient_trceg")
-width = 128
-fill_from = Vector2(0, 0.003968254)
-fill_to = Vector2(0.50396824, 0)
+width = 500
+height = 300
+fill = 1
+fill_from = Vector2(0.23529412, 0.5294118)
+fill_to = Vector2(0, 0.5294118)
+metadata/_snap_enabled = true
+metadata/_snap_count = 12
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eb6dy"]
 shader = ExtResource("13_trceg")
@@ -628,9 +634,10 @@ texture = ExtResource("6_tefeu")
 offset = Vector2(7, 39)
 
 [node name="Flashlight" type="PointLight2D" parent="player/HeadPivot"]
+position = Vector2(12, -11)
 energy = 0.56
 texture = SubResource("GradientTexture2D_a8y0u")
-offset = Vector2(138, 0)
+offset = Vector2(546, 10)
 texture_scale = 2.24
 
 [node name="ScreenFilter - Gray" type="CanvasLayer" parent="."]
@@ -644,7 +651,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(1, 1, 1, 0.14509805)
+color = Color(1, 1, 1, 0.105882354)
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
+[node name="Shadow" type="CanvasModulate" parent="."]
 color = Color(0.51481307, 0.514813, 0.514813, 1)
