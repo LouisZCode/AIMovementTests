@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 @export var speed = 170.0
-@export var fade_distance = 500.0  # Distance to fade over
-@export var fade_start_offset = 500.0  # Offset from foreground left edge (negative = earlier, positive = later)
+@export var fade_distance = 165.0  # Distance to fade over (pixels, 875 - 710)
+@export var fade_start_offset = 710.0  # Pixels from sprite's left edge to start fading
 
 @onready var anim = $player_animation
 @onready var arm_pivot = $ArmPivot
@@ -87,18 +87,24 @@ func _physics_process(_delta):
 		else:
 			anim.play("idle")
 	
-	# Fade foreground when approaching from the left
+	# Fade foreground when player enters the sprite
 	if cave_foreground:
-		# Distance FROM the sprite TO the player (positive when player is to the left)
-		var distance_from_sprite = cave_foreground.global_position.x - global_position.x
+		# Calculate sprite's actual width and left edge
+		var texture_width = cave_foreground.texture.get_width()
+		var actual_width = texture_width * cave_foreground.scale.x
+		var left_edge = cave_foreground.global_position.x - (actual_width / 2)
 
-		if distance_from_sprite >= fade_distance:
-			# Player is far to the left - fully visible
+		# How far INTO the sprite from its left edge
+		var distance_into_sprite = global_position.x - left_edge
+
+		if distance_into_sprite < fade_start_offset:
+			# Before fade zone - fully visible
 			cave_foreground.modulate.a = 1.0
-		elif distance_from_sprite > 0:
-			# Player approaching from left - fade out proportionally
-			var alpha = distance_from_sprite / fade_distance
+		elif distance_into_sprite < fade_start_offset + fade_distance:
+			# Inside fade zone - fade proportionally
+			var fade_progress = distance_into_sprite - fade_start_offset
+			var alpha = 1.0 - (fade_progress / fade_distance)
 			cave_foreground.modulate.a = alpha
 		else:
-			# Player at or past the sprite (to the right) - invisible
+			# Past fade zone - invisible
 			cave_foreground.modulate.a = 0.0
