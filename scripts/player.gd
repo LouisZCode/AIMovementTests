@@ -9,7 +9,7 @@ extends CharacterBody2D
 @onready var arm = $ArmPivot/Arm
 @onready var head_pivot = $HeadPivot
 @onready var head = $HeadPivot/Head
-@onready var cave_foreground = get_node("../Cave_Foreground/Sprite2D")  # Reference the sprite child, not parent
+@onready var cave_foreground = get_node("../Cave_Entry_Foreground/Sprite2D")  # Reference the sprite child, not parent
 
 var is_aiming = false
 
