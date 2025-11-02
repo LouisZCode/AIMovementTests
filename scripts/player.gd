@@ -18,6 +18,8 @@ extends CharacterBody2D
 @onready var cave_int_top = get_node("../Cave_Interior_Top")  # Cave interior top parallax
 @onready var cave_int_foreground = get_node("../Cave_Interior_Foreground")  # Cave interior foreground parallax
 @onready var black_transition = get_node("../TransitionLayer/BlackTransition")  # Black fade transition
+@onready var shadow = get_node("../Shadow")  # CanvasModulate for cave darkness
+@onready var flashlight = $HeadPivot/Flashlight  # PointLight2D for player illumination
 
 var is_aiming = false
 
@@ -151,6 +153,11 @@ func _physics_process(_delta):
 				cave_int_top.visible = false
 			if cave_int_foreground:
 				cave_int_foreground.visible = false
+			# Turn off cave lighting effects when outside
+			if shadow:
+				shadow.visible = false
+			if flashlight:
+				flashlight.visible = false
 		elif distance_past_entry < cave_interior_fade_distance:
 			# Inside fade zone - gradually fade in cave interior
 			var fade_alpha = distance_past_entry / cave_interior_fade_distance
@@ -174,3 +181,8 @@ func _physics_process(_delta):
 			if cave_int_foreground:
 				cave_int_foreground.visible = true
 				cave_int_foreground.modulate.a = 1.0
+			# Turn on cave lighting effects when fully inside
+			if shadow:
+				shadow.visible = true
+			if flashlight:
+				flashlight.visible = true
