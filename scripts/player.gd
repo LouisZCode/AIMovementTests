@@ -96,7 +96,14 @@ func _physics_process(_delta):
 			anim.play("idle_noarms")
 		else:
 			anim.play("idle")
-	
+
+	# Control breathing shader - only active during idle animations
+	if anim.material:
+		if anim.animation == "idle" or anim.animation == "idle_noarms":
+			anim.material.set_shader_parameter("breath_strength", 0.05)
+		else:
+			anim.material.set_shader_parameter("breath_strength", 0.0)
+
 	# Fade foreground when player enters the sprite
 	if cave_foreground:
 		# Calculate sprite's actual width and left edge
