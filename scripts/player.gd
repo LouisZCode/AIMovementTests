@@ -3,6 +3,10 @@ extends CharacterBody2D
 @export var speed = 170.0
 @export var fade_distance = 165.0  # Distance to fade over (pixels, 875 - 710)
 @export var fade_start_offset = 710.0  # Pixels from sprite's left edge to start fading
+@export var cave_interior_fade_distance = 250.0  # Distance over which cave interior fades in
+@export var black_fade_in_offset = 800.0  # When black transition starts fading in
+@export var black_fade_in_distance = 100.0  # Distance to fade black in (reach full black)
+@export var black_fade_out_distance = 150.0  # Distance to fade black out (reveal cave)
 
 @onready var anim = $player_animation
 @onready var arm_pivot = $ArmPivot
@@ -10,6 +14,10 @@ extends CharacterBody2D
 @onready var head_pivot = $HeadPivot
 @onready var head = $HeadPivot/Head
 @onready var cave_foreground = get_node("../Cave_Entry_Foreground/Sprite2D")  # Reference the sprite child, not parent
+@onready var cave_int_bg = get_node("../Cave_Int_BG")  # Cave interior background parallax
+@onready var cave_int_top = get_node("../Cave_Interior_Top")  # Cave interior top parallax
+@onready var cave_int_foreground = get_node("../Cave_Interior_Foreground")  # Cave interior foreground parallax
+@onready var black_transition = get_node("../TransitionLayer/BlackTransition")  # Black fade transition
 
 var is_aiming = false
 
@@ -108,3 +116,61 @@ func _physics_process(_delta):
 		else:
 			# Past fade zone - invisible
 			cave_foreground.modulate.a = 0.0
+
+		# Black transition fade effect
+		if black_transition:
+			var black_fade_start = black_fade_in_offset
+			var black_fade_peak = black_fade_in_offset + black_fade_in_distance
+			var black_fade_end = black_fade_peak + black_fade_out_distance
+
+			if distance_into_sprite < black_fade_start:
+				# Before black fade - transparent
+				black_transition.modulate.a = 0.0
+			elif distance_into_sprite < black_fade_peak:
+				# Fading to black
+				var fade_progress = (distance_into_sprite - black_fade_start) / black_fade_in_distance
+				black_transition.modulate.a = fade_progress
+			elif distance_into_sprite < black_fade_end:
+				# Fading from black (revealing cave interior)
+				var fade_progress = (distance_into_sprite - black_fade_peak) / black_fade_out_distance
+				black_transition.modulate.a = 1.0 - fade_progress
+			else:
+				# Past black fade - fully transparent
+				black_transition.modulate.a = 0.0
+
+		# Fade in cave interior parallax as player enters
+		# Start fading in at the point where cave foreground becomes invisible
+		var cave_entry_point = fade_start_offset + fade_distance
+		var distance_past_entry = distance_into_sprite - cave_entry_point
+
+		if distance_past_entry < 0:
+			# Before cave entry - cave interior invisible
+			if cave_int_bg:
+				cave_int_bg.visible = false
+			if cave_int_top:
+				cave_int_top.visible = false
+			if cave_int_foreground:
+				cave_int_foreground.visible = false
+		elif distance_past_entry < cave_interior_fade_distance:
+			# Inside fade zone - gradually fade in cave interior
+			var fade_alpha = distance_past_entry / cave_interior_fade_distance
+			if cave_int_bg:
+				cave_int_bg.visible = true
+				cave_int_bg.modulate.a = fade_alpha
+			if cave_int_top:
+				cave_int_top.visible = true
+				cave_int_top.modulate.a = fade_alpha
+			if cave_int_foreground:
+				cave_int_foreground.visible = true
+				cave_int_foreground.modulate.a = fade_alpha
+		else:
+			# Past fade zone - cave interior fully visible
+			if cave_int_bg:
+				cave_int_bg.visible = true
+				cave_int_bg.modulate.a = 1.0
+			if cave_int_top:
+				cave_int_top.visible = true
+				cave_int_top.modulate.a = 1.0
+			if cave_int_foreground:
+				cave_int_foreground.visible = true
+				cave_int_foreground.modulate.a = 1.0
